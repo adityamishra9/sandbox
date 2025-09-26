@@ -21,6 +21,9 @@
                 <button id="sendButton"><i class="fas fa-paper-plane"></i></button>
             </div>
         </footer>
+        <div class="theme-toggle">
+            <i class="fas fa-sun" id="theme-icon"></i>
+        </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
@@ -30,6 +33,24 @@
         const inputbox = document.getElementById('inputbox');
         const sendButton = document.getElementById('sendButton');
         const showdownConverter = new showdown.Converter();
+        let messageIdCounter = 0;
+
+        const themeToggle = document.querySelector('.theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        let isDarkMode = false;
+
+        themeToggle.addEventListener('click', () => {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode');
+
+            if (isDarkMode) {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            } else {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            }
+        });
 
         async function sendMessage() {
             const message = inputbox.value.trim();
@@ -91,7 +112,23 @@
                     reply = 'Sorry, I could not process your request.';
                 }
 
-                appendMessage('Bot', reply);
+                 const botMessageId = appendMessage('Bot', '...'); // Show ellipses initially
+
+                // Simulate typing effect (optional)
+                let dots = '';
+                const intervalId = setInterval(() => {
+                    dots = dots.length < 3 ? dots + '.' : '';
+                    document.getElementById(botMessageId).querySelector('.text').textContent = dots;
+                }, 500);
+
+                setTimeout(()=>{
+                    clearInterval(intervalId);
+                    const messageDiv = document.getElementById(botMessageId);
+                    if (messageDiv) {
+                        messageDiv.querySelector('.text').innerHTML = showdownConverter.makeHtml(reply);
+                    }
+                }, 1000)
+
 
             } catch (error) {
                 console.error('Error:', error);
@@ -99,7 +136,7 @@
             }
         }
 
-        function appendMessage(sender, message) {
+        function appendMessage(sender, message, existingMessageId = null) {
             const messageDiv = document.createElement('div');
             messageDiv.classList.add('message', sender.toLowerCase());
 
@@ -109,13 +146,22 @@
 
             const textDiv = document.createElement('div');
             textDiv.classList.add('text');
-            textDiv.innerHTML = sender === 'User' ? message : showdownConverter.makeHtml(message);
+            textDiv.innerHTML = message;
 
             messageDiv.appendChild(senderSpan);
             messageDiv.appendChild(textDiv);
 
+            if (existingMessageId) {
+                messageDiv.id = existingMessageId;
+            } else {
+                messageIdCounter++;
+                messageDiv.id = `message-${messageIdCounter}`;
+            }
+
             chatbox.appendChild(messageDiv);
             chatbox.scrollTop = chatbox.scrollHeight;
+
+            return messageDiv.id; // Return the message ID
         }
 
         sendButton.addEventListener('click', sendMessage);
@@ -126,23 +172,4 @@
         });
     </script>
 </body>
-</html>        <div class="theme-toggle">
-            <i class="fas fa-sun" id="theme-icon"></i>
-        </div>    <script>
-        const themeToggle = document.querySelector('.theme-toggle');
-        const themeIcon = document.getElementById('theme-icon');
-        let isDarkMode = false;
-
-        themeToggle.addEventListener('click', () => {
-            isDarkMode = !isDarkMode;
-            document.body.classList.toggle('dark-mode');
-
-            if (isDarkMode) {
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
-            } else {
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
-            }
-        });
-    </script>
+</html>
