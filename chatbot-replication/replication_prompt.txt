@@ -8,7 +8,7 @@ The Gemini Chatbot is a web application that allows users to interact with the G
 
 **2. API Key:**
 
-*   API Key: AIzaSyDKpV6ZXdRIgnzogoSIIl6ccjeNrkM8z5U
+*   API Key: GEMINI_API_KEY
 *   Model: gemini-2.5-flash
 
 **Important:** This API key is provided for replication purposes only. Do not use it for production environments. Replace it with your own API key.
@@ -53,7 +53,7 @@ The project consists of two main files:
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
     <script>
-        const apiKey = 'AIzaSyDKpV6ZXdRIgnzogoSIIl6ccjeNrkM8z5U';
+        const apiKey = 'GEMINI_API_KEY';
         const chatbox = document.getElementById('chatbox');
         const inputbox = document.getElementById('inputbox');
         const sendButton = document.getElementById('sendButton');
