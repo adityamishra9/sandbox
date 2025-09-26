@@ -6,8 +6,9 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    overflow: hidden;
+    overflow-x: hidden; /* Prevent horizontal scroll */
     color: white;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
 .container {
@@ -18,11 +19,13 @@ body {
     -webkit-backdrop-filter: blur(7.7px);
     border: 1px solid rgba(255, 255, 255, 0.3);
     padding: 20px;
-    width: 600px;
-    max-width: 90%;
+    width: 80%;
+    max-width: 700px; /* Limit maximum width */
     display: flex;
     flex-direction: column;
-    height: 90vh;
+    min-height: 80vh;
+    max-height: 95vh; /* Ensure it doesn't exceed viewport height */
+    margin: 20px;
 }
 
 header {
@@ -32,13 +35,16 @@ header {
 }
 
 header h1 {
-    font-size: 2em;
+    font-size: 2.2em;
+    margin-bottom: 10px;
 }
 
 main {
     flex-grow: 1;
     overflow-y: auto;
     padding: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
 #chatbox {
@@ -53,16 +59,20 @@ main {
     border-radius: 8px;
     word-wrap: break-word;
     max-width: 80%;
+    line-height: 1.4;
 }
 
 .message.user {
     background-color: rgba(135, 206, 250, 0.15);
     align-self: flex-end;
+    text-align: right;
 }
 
 .message.bot {
     background-color: rgba(144, 238, 144, 0.15);
     align-self: flex-start;
+    text-align: left;
+    color: white;
 }
 
 .message.error {
@@ -76,7 +86,7 @@ main {
 }
 
 .text {
-    line-height: 1.4;
+    word-break: break-word; /* Prevent long words from overflowing */
 }
 
 footer {
@@ -98,6 +108,7 @@ footer {
     color: white;
     box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
     font-size: 16px;
+    min-width: 0;
 }
 
 .input-area input::placeholder {
@@ -114,6 +125,7 @@ footer {
     font-size: 16px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     transition: background 0.3s ease;
+    white-space: nowrap;
 }
 
 .input-area button:hover {
@@ -138,3 +150,82 @@ footer {
 #chatbox::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.6);
 }
+
+body.dark-mode {
+    background: linear-gradient(to right, #222, #333);
+    color: #eee;
+}
+
+body.dark-mode .container {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.8);
+}
+
+body.dark-mode #chatbox {
+    background: rgba(0, 0, 0, 0.3);
+    color: #ddd;
+}
+
+body.dark-mode .input-area input {
+    background: rgba(0, 0, 0, 0.4);
+    color: #ddd;
+}
+
+body.dark-mode .input-area input::placeholder {
+    color: rgba(200, 200, 200, 0.7);
+}
+
+.theme-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: white;
+    z-index: 10;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+        margin: 10px;
+        min-height: 70vh;
+    }
+
+    header h1 {
+        font-size: 1.8em;
+    }
+
+    .input-area {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 5px;
+    }
+
+    .input-area input {
+        margin-bottom: 5px;
+    }
+
+    .message {
+        max-width: 95%;
+    }
+
+    .theme-toggle {
+        top: 10px;
+        right: 10px;
+        font-size: 20px;
+    }
+}
+
+@media (max-height: 600px) {
+    .container {
+        max-height: 98vh;
+        margin: 5px;
+    }
+}
+
+/* Improve code readability */
+/* Add more comments to explain different sections */
+/* Use consistent naming conventions */
+/* Consider using a CSS preprocessor like Sass for better organization */
